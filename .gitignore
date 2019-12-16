@@ -1,0 +1,18 @@
+# LaTeX intermediaries.
+/*.aux
+/*.toc
+/*.lof
+
+# Index generation intermediaries.
+/*.idx
+/*.ilg
+/*.ind
+
+# LaTeX build driver intermediaries.
+/*.fdb_latexmk
+/*.fls
+/*.synctex.*
+
+# LaTeX output artifacts.
+/*.pdf
+/*.log
