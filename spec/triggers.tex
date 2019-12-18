@@ -1,0 +1,89 @@
+\chapter{Triggers}
+
+% Definition.
+A \termdef{trigger}[Trigger] is an \termref{in-game}[Game] event that causes a well-defined response.
+Triggers are fired, sometimes by other events or triggers, sometimes by \termref{player}[Player] choice.
+
+\section{Victory condition}
+
+% Definition.
+A \termdef{victory condition}[Trigger!Victory condition] is a \termref{trigger}[Trigger] that occurs when the \termref{game state}[Game!State] matches a certain condition, causing the victory of a \termref{faction}[Faction].
+
+\begin{rules}
+    \rule{trigger.victory}
+    \begin{stmts}
+        \stmt{} Victory conditions instantly end the \termref{game}[Game].
+        \stmt{} Victory conditions take precedence over any and all other \termref{triggers}[Trigger].
+        \stmt{} When multiple victory conditions are triggered at the same time, the \termref{game}[Game] ends in a draw, with no \termref{player}[Player] being awarded any \termref{score}[Player!Score].
+    \end{stmts}
+\end{rules}
+
+\subsection{Transciever}
+
+% Definition.
+The \termdef{transciever trigger}[Trigger!Transciever] implements the \emph{task victory} mechanic of the \termref{machine faction}[Faction!Machines].
+
+\begin{rules}
+    \rule{trigger.transciever} When a transciever trigger is fired, the \termref{transciever count}[Game!Transciever count] is incremented by \(1\).
+\end{rules}
+
+\section{Interjection trigger}
+
+% Definition.
+An \termdef{interjection trigger}[Trigger!interjection] is a \termref{trigger}[Trigger] that is fired during an \termref{interjection phase}[Phase!Interjection].
+
+% Voluntary.
+Most interjection triggers are voluntary, meaning that \termref{players}[Player] who may trigger them can choose to do so, but are not required to.
+
+\begin{rules}
+    \rule{trigger.interjection}
+    \begin{stmts}
+        \stmt{} Interjection triggers are voluntary.
+        \stmt{} Interjection trigger may ony be fired during the \termref{interjection phase}[Phase!Interjection].
+        \stmt{} To fire an interjection trigger, the \termref{player}[Player] must provide proof of its legality, possibly forcing them to \termref{reveal}[Secret!revealed] a \termref{secret}[Secret].
+    \end{stmts}
+\end{rules}
+
+\subsection{Corruption}
+
+% Definition.
+The \termdef{corruption trigger}[Trigger!Corruption] is an \termref{interjection trigger}[Trigger!interjection] that can be fired by any \termref{hidden}[Secret!hidden] \termref{human faction player}[Faction!Humans].
+
+% Explanation.
+By \termref{revealing}[Secret!revealed] themselves, every \termref{human faction player}[Faction!Humans] can fire the corruption trigger once per \termref{game}[Game] to irrevesibly change their participation in the \termref{control phase vote}[Phase!Control].
+
+\begin{rules}
+    \rule{trigger.corruption}
+    \begin{stmts}
+        \stmt{} Any \termref{hidden}[Secret!hidden] \termref{human faction player}[Faction!Humans] may trigger a corruption interjection.
+        \stmt{} When a corruption trigger is fired, the \termref{player}[Player] reveals their \termref{allegiance}[Player!Allegiance].
+        \stmt{} When a corruption trigger is fired, the \termref{player}[Player] gets to change the result of the \termref{control phase vote}[Phase!Control] to anything they like.
+    \end{stmts}
+    \rule{humans.revealed} A \termref{human faction player}[Faction!Humans] that has \termref{revealed}[Secret!revealed] their \termref{allegiance}[Player!Allegiance] no longer paticipates in any \termref{control phase vote}[Phase!Control].
+\end{rules}
+
+\section{Damage}
+
+% Definition.
+A \termdef{damage trigger}[Trigger!Damage] is a \termref{trigger}[Trigger] that causes the reduction of a \termref{drone's health}[Drone!Health].
+
+% Parameters.
+Every damage trigger is parameterized by the target \termref{drone}[Drone] and the amount of damage caused in integer \termref{health points}[Drone!Health].
+
+\begin{rules}
+    \rule{trigger.damage} When a damage trigger occurs, the target \termref{drone's health}[Drone!Health] is decreased by the indicated damage value.
+\end{rules}
+
+\section{Area}
+
+% Definition.
+An \termdef{area trigger}[Trigger!Area] is casued whenever a \termref{drone}[Drone] enters an \termref{area}[Map!Area].
+
+\begin{rules}
+    \rule{trigger.area.new}
+    \begin{stmts}
+        \stmt{} An area trigger is fired when a \termref{drone}[Drone] enters an \termref{area}[Map!Area].
+        \stmt{} The trigger ends without any effects if the \termref{drone}[Drone] had already entered this \termref{area}[Map!Area] once before in this \termref{round}[Round].
+        \stmt{} When an area trigger occurs, the \termref{drone's owner}[Drone!Owner] is presented with a random \termref{item}[Item]. They may choose to either discard it, or take it into their \termref{drone's inventory}[Drone!Inventory]. They may also discard any and all \termref{items}[Item] from their \termref{drone's inventory}[Drone!Inventory].
+    \end{stmts}
+\end{rules}

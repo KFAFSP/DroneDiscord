@@ -1,0 +1,126 @@
+\documentclass[a4paper]{scrbook}
+
+% Preamble is separate for better versioning.
+\input{preamble.tex}
+
+%
+% Metadata.
+%
+
+\title{Discordant Drones Deathmatch}
+\subtitle{
+    A community board game clone of the \TTT{} formula.\\
+    \RNum{3}.\ Draft
+}
+\author{KFAF}
+\date{2019}
+
+\dedication{
+Special thanks to the Yogscast, for providing years of irreplacable entertainment.\\
+With best regards to Ben Edgar, who really knows how to sell spreadsheet-based games.
+}
+
+%
+% Structuring.
+%
+
+% Number sections up to subsubsection.
+\setcounter{secnumdepth}{3}
+% Build TOC down to subsections.
+\setcounter{tocdepth}{2}
+
+%
+% Content.
+%
+
+\begin{document}
+    \maketitle{}
+
+    \frontmatter{}
+
+    \tableofcontents{}
+    \listoffigures{}
+    \listoftodos{}
+
+    % Introductory chapter.
+    %   - What is TTT?
+    %   - What elements of TTT are to be carried over?
+    %   - What does DDD strive to achieve?
+    \include{intro}
+
+    \mainmatter{}
+
+    \part{Manual}
+
+    % Scenario description.
+    %   - What world is the game set in?
+    %   - Who are the participants in this game?
+    %   - What are their objectives?
+    \include{man/scenario}
+
+    % Base game instructions.
+    %   - What materials are used in the game?
+    %   - How is the game set up?
+    %   - How is the game played?
+    \include{man/instructions}
+
+    \part{Specification}
+
+    % Notation.
+    %   - How are rules denoted in this book?
+    \include{spec/notation}
+
+    % Game specificiation.
+    %   - What is a game?
+    %   - What is the game state?
+    \include{spec/game}
+
+    % Map specification.
+    %   - What is the map?
+    \include{spec/map}
+
+    % Player specification.
+    %   - What is a player?
+    %   - What are players required to do?
+    \include{spec/players}
+
+    % Drone specification.
+    %   - What are drones?
+    \include{spec/drones}
+
+    % Trigger specification.
+    %   - What is a trigger?
+    %   - Which triggers are defined?
+    \include{spec/triggers}
+
+    % Action specification.
+    %   - What are actions?
+    %   - Which actions are defined?
+    \include{spec/actions}
+
+    \part{Canon}
+
+    % Item specification.
+    %   - What are the currently defined canonical items?
+    \include{canon/items}
+
+    % Trait specification.
+    %   - What are the currently defined canonical traits?
+    \include{canon/traits}
+
+    \backmatter{}
+    \bookmarksetup{startatroot}
+
+    % Glossary
+    %   - Where is a term defined?
+    \cleardoublepage{}
+    \addcontentsline{toc}{chapter}{Glossary}
+    \printindex
+
+    % Rule index
+    %   - Where is a rule defined?
+    \cleardoublepage{}
+    \addcontentsline{toc}{chapter}{Rule index}
+    \printindex[rules]
+
+\end{document}

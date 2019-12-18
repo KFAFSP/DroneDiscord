@@ -1,0 +1,87 @@
+\chapter{Items}
+
+\newenvironment{weaponstats}{%
+\tabularx{0.8\textwidth}{>{\ttfamily}r@{ : }l}% chktex 26
+}{%
+\endtabularx%
+}
+
+\section{Weapons}
+
+\subsection{Melee}
+
+% Recommendations.
+\begin{recommendations}
+    \recommendation{} Since melee weapons do not have a hit test and always cost \SI{1}{\actionpoints{}}, their damage value must be chosen carefully. Essentially, they convert \AP{} to \termref{damage}[Trigger!Damage].
+\end{recommendations}
+
+\subsubsection{EMP-Baton}
+
+Must be discarded after use.
+
+\begin{weaponstats}
+    Damage & 5\\
+\end{weaponstats}
+
+\subsection{Ranged}
+
+% Recommendations.
+\begin{recommendations}
+    \recommendation{} Ranged weapons may have expensive \termref{initiative cost}[Action!Cost], in which case they become more viable in \termref{engage actions}[Action!Engage], since no \termref{initiative cost}[Action!Cost] has to be paid.
+\end{recommendations}
+
+\subsubsection{Shotgun}
+
+\begin{weaponstats}
+    Damage & 4\\
+    Cost & 2\\
+    Accuracy & 4\\
+    Range & 3\\
+\end{weaponstats}
+
+\subsubsection{Pistol}
+
+\begin{weaponstats}
+    Damage & 2\\
+    Cost & 2\\
+    Accuracy & 5\\
+    Range & 4\\
+\end{weaponstats}
+
+\subsubsection{SMG}
+
+\begin{weaponstats}
+    Damage & 2\\
+    Cost & 1\\
+    Accuracy & 3\\
+    Range & 6\\
+\end{weaponstats}
+
+\subsubsection{Assault rifle}
+
+\begin{weaponstats}
+    Damage & 3\\
+    Cost & 3\\
+    Accuracy & 4\\
+    Range & 6\\
+\end{weaponstats}
+
+\subsubsection{Sniper rifle}
+
+\begin{weaponstats}
+    Damage & 5\\
+    Cost & 4\\
+    Accuracy & 4\\
+    Range & 12\\
+\end{weaponstats}
+
+\subsubsection{EMP-Lance}
+
+Must be discarded after use.
+
+\begin{weaponstats}
+    Damage & 10\\
+    Cost & 6\\
+    Accuracy & 5\\
+    Range & 4\\
+\end{weaponstats}

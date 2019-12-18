@@ -1,0 +1,198 @@
+%
+% Packages.
+%
+
+% Compatibility.
+\usepackage{scrhack}
+
+% Structuring.
+\usepackage{import}
+
+% Use UTF-8 encoded LaTeX sources.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Use english (defaults to AE) language.
+\usepackage[english]{babel}
+
+% Colors.
+\usepackage{xcolor}
+
+% Math.
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{interval}
+
+% Drawing.
+\usepackage{mdframed}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+% Fonts.
+\usepackage[scaled=0.81]{luximono}
+
+% Drafting.
+\usepackage[obeyDraft, colorinlistoftodos]{todonotes}
+
+% Units.
+\usepackage{siunitx}
+
+% Index.
+\usepackage{imakeidx}
+\usepackage{makeidx}
+
+% Document-internal references.
+\usepackage{varioref}
+\usepackage[hidelinks]{hyperref}
+\usepackage[depth=3]{bookmark}
+\usepackage[english, nameinlink]{cleveref}
+
+% Citations.
+\usepackage{csquotes}
+
+% Floats.
+\usepackage{float}
+\usepackage{subcaption}
+
+% Enumerations.
+\usepackage{paralist}
+\usepackage[shortlabels]{enumitem}
+
+% Tables.
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+
+% Extended command declarations.
+\usepackage{xparse}
+
+%
+% Units.
+%
+
+% /P/ ... Point(s)
+\newcommand*{\point}[0]{\termref{\textsl{P}}[Player!Score]}
+\DeclareSIUnit\points{\point}
+% /AP/ ... Action point(s)
+\newcommand*{\AP}[0]{\termref{\textsl{AP}}[Player!Action points]}
+\DeclareSIUnit\actionpoints{\AP}
+% /HP/ ... Health point(s)
+\newcommand*{\HP}[0]{\termref{\textsl{HP}}[Drone!Health]}
+\DeclareSIUnit\healthpoints{\HP}
+% /u/ ... Map unit(s)
+\newcommand*{\mapunit}[0]{\termref{\textsl{u}}[Map!Distance]}
+\DeclareSIUnit\mapunits{\mapunit}
+
+%
+% Shortcuts.
+%
+
+% Trouble in Terrorist Town.
+\newcommand*{\TTT}[0]{\textbf{TTT}}
+% Discordant Drone Deathmatch.
+\newcommand*{\DDD}[0]{\textbf{DDD}}
+
+%
+% Functions.
+%
+
+% Uppercase roman numeral.
+\newcommand*{\RNum}[1]{%
+\uppercase\expandafter{\romannumeral #1\relax}% chktex 1, chktex 41
+}
+
+%
+% Game terms.
+%
+
+% Create an index for terms.
+\makeindex[title=Glossary]
+
+% Format a highlighted appearance of a game term.
+%   \newterm{term}
+\newcommand*{\term}[1]{\emph{#1}}
+
+% Definition of a term.
+%   \termdef{term}[index=term]
+\NewDocumentCommand{\termdef}{mO{#1}}{%
+\term{#1}\index{#2}\label{term:#2}%
+}
+% Reference to a term.
+%   \termref{term}[index=term]
+\NewDocumentCommand{\termref}{mO{#1}}{\hyperref[term:#2]{#1}}
+
+%
+% Rule hints.
+%
+
+% Make a list of recommendations.
+%   \begin{recommendations}
+%       \recommendation
+%   \end{recommendations}
+\newenvironment{recommendations}{%
+\begin{mdframed}%
+\begin{center}\textbf{Recommendation}\end{center}%
+\begin{itemize}%
+\newcommand*{\recommendation}{\item}%
+}{%
+\end{itemize}
+\end{mdframed}%
+}
+
+%
+% Game rules.
+%
+
+% Create an index for rules.
+\makeindex[name=rules,title={Rule index},columns=1]
+
+% Setup a counter for rules.
+%   - Group rules by chapter
+\newcounter{rulenumber}[chapter]
+\let\therulenumberbak\therulenumber{}
+\renewcommand{\therulenumber}{\arabic{chapter}\S{}\therulenumberbak{}}
+
+% Format the ID of a rule.
+%   \ruleid{id}
+\newcommand*{\ruleid}[1]{\texttt{#1}}
+
+% Definition of a rule.
+%   \ruledef{id}
+\newcommand*{\ruledef}[1]{%
+\refstepcounter{rulenumber}%
+\therulenumber{}%
+\index[rules]{%
+\the\numexpr\value{chapter}*1000+\value{rulenumber}\relax@\therulenumber{}\,-\,\ruleid{#1}%
+}%
+\label{rule:#1}%
+}
+% Reference to a rule.
+%   \ruleref{id}
+\newcommand*{\ruleref}[1]{\ref{rule:#1}}
+
+% Paragraph declaration of a rule.
+%   \rulepar{id}
+\newcommand*{\rulepar}[1]{\par\ruledef{#1}\,-\,\ruleid{#1}}
+
+% Make a list of rule declarations.
+%   \begin{rules}
+%       \rule{id}
+%   \end{rules}
+\newenvironment{rules}{%
+\begin{itemize}%
+\renewcommand*{\rule}[1]{\item[\ruledef{##1}] \ruleid{##1}\par}%
+}{%
+\end{itemize}%
+}
+
+% Make a list of ordered statements.
+%   \begin{stmts}
+%       \stmt
+%   \end{ſtmts}
+\newenvironment{stmts}{%
+\begin{enumerate}[(1)]%
+\newcommand*{\stmt}[0]{\item}%
+}{%
+\end{enumerate}%
+}

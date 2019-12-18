@@ -1,0 +1,33 @@
+% Introduction.
+The following chapters define all the terms and rules in the current edition of the game.
+Being a semi-formal specification, all game relevant terms require a highlighted definition, and all rules must be identified using a unique name.
+Below is an example of how definitions of terms and rules are typeset in this book.\medskip
+
+% Example definition.
+An \term{example}\label{term:example}, also \term{sample}, is a specimen characteristic of its kind that illustrates a general rule.\medskip
+
+% Example term reference.
+Everywhere a \hyperref[term:example]{term} occurs, it is hyperlinked to its definition.\medskip
+
+% Example inline rule.
+0\S{}1\,-\,\ruleid{example.inline} dictates that inline rules start a paragraph with the rule number and name, and extend over the entire paragraph.\medskip
+
+% Example rule list.
+\begin{itemize}
+    \item[0\S{}2]\ruleid{example.list}
+
+    Rules in a list are preceded by their number and id, with the rule text in separate paragraphs.
+
+    \item[0\S{}3]\ruleid{example.stmts}
+
+    Rules might have more internal complexity, if that fits within a single logical scope, possibly referencing \term{well-defined game terminology} (see 0.1).
+
+    \begin{stmts}
+        \stmt{} Rules consisting of multiple statements receive a statement numbering.
+        \stmt{} Statements are listed in order of precedence.
+        \stmt{} Statements with higher indices overrule those with lower indices.
+    \end{stmts}
+\end{itemize}\medskip
+
+% Example rule reference.
+If necessary at any point, a rule like 0\S{}2 can be referred to by its number.

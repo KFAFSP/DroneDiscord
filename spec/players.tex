@@ -1,0 +1,162 @@
+\chapter{Players}
+
+% Definition.
+A \termdef{player}[Player] is a particiapant of a \termref{game}[Game], in which they take control of a \termref{drone}[Drone].
+Players are required to fulfill obligations during their \termref{turns}[Turn], and may exert privileges other player's \termref{turns}[Turn].
+
+\section{Secrets}
+
+% Definition.
+A \termdef{secret}[Secret] is part of the \termref{game state}[Game!State] which may not be freely shared between \termref{players}[Player].
+Secrets are of special importance for the core game mechanics and require the attention of all \termref{players}[Player].
+
+% Explanation.
+Communication between \termref{players}[Player] during a \termref{game}[Game] is not only allowed, but strongly encouraged.
+However, there are a few limitations placed on the information that may be shared by \termref{players}[Player] to keep the spirit of the game.
+
+\begin{rules}
+    \rule{player.secret} \termref{game state}[Game!State] information that is designated as secret may not be shared by \termref{players}[Player] unless explicitly stated otherwise.
+    \rule{player.secret.init} All secrets are \termref{hidden}[Secret!hidden] by default unless explicitly stated otherwise.
+\end{rules}
+
+\subsection{Hidden}
+
+% Definition.
+A \termdef{hidden secret}[Secret!hidden] is a \termref{secret}[Secret] that is not known by all \termref{players}[Player].
+To clarify, this means that there exists at least one \termref{player}[Player] that may not know about the hidden secret.
+
+% Explanation.
+All \termref{hidden secrets}[Secret!hidden] are subject to communication restrictions between \termref{players}[Player].
+For example, they protect the confidentiality of the actions of opposing faction members.
+
+\begin{rules}
+    \rule{player.secret.hidden} \termref{Players}[Player] may choose to communicate any hidden secret, but they may not give proof of them, e.g.\ reveal tokens.
+\end{rules}
+
+\subsection{Revealed}
+
+% Definition.
+A \termdef{revealed secret}[Secret!revealed] is a \termref{secret}[Secret] that is known by all \termref{players}[Player].
+
+% Explanation.
+All \termref{revealed secrets}[Secret!revealed] are visible to all \termref{players}[Player] at all times.
+They ensure that all \termref{players}[Player] fairly share information and make the board state and legality of board events clear.
+
+\begin{rules}
+    \rule{player.secret.revealed}
+    \begin{stmts}
+        \stmt{} If the rules state that a \termref{hidden secret}[Secret!hidden] is revealed, it must be announced to all \termref{players}[Player].
+        \stmt{} Revealed secrets must be proven and visible to all \termref{players}[Player] at all times.
+    \end{stmts}
+\end{rules}
+
+\section{Attributes}
+
+% Definition.
+Every \termref{player}[Player] has the same set of attributes with different actual values.
+All attribtutes must be initialized at the start of a \termref{game}[Game], and influence how the \termref{player}[Player] may participate in the \termref{game}[Game].
+
+\subsection{Allegiance}
+
+% Definition.
+The \termdef{allegiance}[Player!Allegiance] of a \termref{player}[Player] defines which \termref{faction}[Faction] they are a member of.
+
+% Explanation.
+The player allegiance is the most important \termref{secret}[Secret] of a \termref{game}[Game].
+Additionally, it is randomly assigned to every \termref{player}[Player], so that it cannot be deduced from any other initial \termref{game state}[Game!State] information.
+
+\begin{rules}
+    \rule{player.allegiance.init}
+    \begin{stmts}
+        \stmt{} Player allegiances are assigned randomly at the start of a \termref{game}[Game].
+        \stmt{} The ratio of \termref{players}[Player] part of each \termref{faction}[Faction] must match the \termref{faction ration}[Game!Faction ratio].
+    \end{stmts}
+    \rule{player.allegiance.secret} Player allegiance is a \termref{secret}[Secret] that is only known to the concerned \termref{player}[Player].
+\end{rules}
+
+\subsection{Elimination}
+
+% Definition.
+An \termdef{eliminated player}[Player!eliminated] is a \termref{player}[Player] that no longer participates in taking \termref{turns}[Turn].
+
+\begin{rules}
+    \rule{player.elimination} Eliminated players may not take \termref{turns}[Turn].
+    \rule{player.elimination.init} At the start of a \termref{game}[Game], no \termref{players}[Player] is eliminated.
+    \rule{player.elimination.react} Eliminated players may only react to events that explicitly allow this.
+\end{rules}
+
+\subsection{Action points}
+
+% Definition.
+An \termdef{action point}[Player!Action points] (\AP{}) is a resource that can be spent by the \termref{player}[Player] during their \termref{turn}[Turn].
+
+\begin{rules}
+    \rule{player.actionpoints.init} At the start of their turn, a \termref{players}[Player] action point budget is reset to \(0\).
+\end{rules}
+
+% Unit.
+The action point budget of a \termref{player}[Player] is measured in integer action points, with one action point being denoted as \SI{1}{\actionpoints{}}.
+
+\subsection{Score}
+
+% Definition.
+The \termdef{score}[Player!Score] of a \termref{player}[Player] is a measure of their past performance in a sequence of \termref{ranked games}[Game!ranked] as part of a \termref{tournament}[Tournament].
+
+\begin{rules}
+    \rule{player.score.init} At the start of a \termref{tournament}[Tournament], each player score is reset to \(0\).
+\end{rules}
+
+% Unit.
+The score is measured in integer points, with one point being denoted as \SI{1}{\points}.
+
+\section{Factions}
+
+% Definition.
+A \termdef{faction}[Faction] is a group of \termref{players}[Player] that share common \termref{victory conditions}[Trigger!Victory condition].
+All \termref{players}[Player] within a \termref{faction}[Faction] either achieve shared victory or are defeated by the end of the game.
+
+\begin{rules}
+    \rule{faction.victory} When a faction wins, the game ends immediately, and all of its \termref{players}[Player] are awarded the same amount of \termref{points}[Player!Score].
+\end{rules}
+
+\subsection{Machines}
+
+% Definition.
+The \termdef{Machine faction}[Faction!Machines] represents the side of the majority \termref{players}[Player] controlling killer drones.
+
+% Victory conditions.
+The machines have three different \termref{victory conditions}[Trigger!Victory condition].
+
+\begin{rules}
+    \rule{machines.victory.task}
+    \begin{stmts}
+        \stmt{} The \termref{machines}[Faction!Machines] achieve a \emph{task victory} if the \termref{transciever count}[Game!Transciever count] reaches the \termref{transciever goal}[Game!Transciever goal].
+        \stmt{} This victory awards all \termref{players}[Player] of this \termref{faction}[Faction] \SI{3}{\points}.
+    \end{stmts}
+    \rule{machines.victory.domination}
+    \begin{stmts}
+        \stmt{} The \termref{machines}[Faction!Machines] achieve a \emph{domination victory} if all opposing \termref{faction's}[Faction] \termref{players}[Player] are eliminated.
+        \stmt{} This victory awards all \termref{players}[Player] of this \termref{faction}[Faction] \SI{2}{\points}.
+    \end{stmts}
+    \rule{machines.victory.time}
+    \begin{stmts}
+        \stmt{} The \termref{machines}[Faction!Machines] achieve a \emph{time victory} if the \termref{round counter}[Game!Round counter] passes the \termref{round limit}[Game!Round limit].
+        \stmt{} This victory awards all \termref{players}[Player] of this \termref{faction}[Faction] \SI{1}{\points}.
+    \end{stmts}
+\end{rules}
+
+\subsection{Humans}
+
+% Definition.
+The \termdef{Human faction}[Faction!Humans] represents the side of the minority \termref{players}[Player] controlling the corrupted drones.
+
+% Victory conditions.
+The \termref{humans}[Faction!Humans] have but one \termref{victory condition}[Trigger!Victory condition].
+
+\begin{rules}
+    \rule{humans.victory.domination}
+    \begin{stmts}
+        \stmt{} The \termref{humans}[Faction!Humans] achieve a \emph{domination victory} if all opposing \termref{faction's}[Faction] \termref{players}[Player] are \termref{eliminated}[Player!eliminated].
+        \stmt{} This victory awards all \termref{players}[Player] of this \termref{faction}[Faction] \SI{2}{\points}.
+    \end{stmts}
+\end{rules}

@@ -1,0 +1,257 @@
+\chapter{Actions}
+
+% Definition.
+An \termdef{action}[Action] is performed by a \termref{player's}[Player] \termref{drone}[Drone] to modify the \termref{game state}[Game!State].
+
+% Explanation.
+Almost all \termref{player}[Player] interaction with the \termref{game state}[Game!State] is done via actions, excluding \termref{triggers}[Trigger].
+Actions are grouped into the two categories \termref{primary}[Action!primary] and \termref{secondary}[Action!secondary] with respect to the \termref{phases}[Phase] they can be executed in.
+
+% Remarks on secondary actions.
+It should be noted that all ordinary actions are \termref{secondary}[Action!secondary], with \termref{primary actions}[Action!primary] being extensions of them.
+It is therefore unnecessary to include the primary or secondary prefix when referring to actions.
+
+\begin{rules}
+    \rule{action.active}
+    \begin{stmts}
+        \stmt{} An action is executed by an individual \termref{drone}[Drone].
+        \stmt{} Only the \termref{active player}[Player!active] can perform actions.
+    \end{stmts}
+\end{rules}
+
+\section{Primary}
+
+% Definition.
+A \termdef{primary action}[Action!primary] is an \termref{action}[Action] that can be voted on in the \termref{control phase}[Phase!Control] and is executed during the \termref{primary phase}[Phase!Primary].
+
+% Explanation.
+Since primary actions are always decided on by vote \termref{control phase vote}[Phase!Control], there are as few of them as possible.
+Each of them provides unique advantages and disadvantages to every \termref{faction}[Faction], enabling competition.
+As a rule of thumb, every \termref{primary action}[Action!primary] should provide the \termref{active player}[Player!active] with an obligation, whilst also granting them some sort of bonus.
+
+\subsection{Operate}
+
+% Definition.
+The \termdef{operation action}[Action!Operate] is a \termref{primary action}[Action!primary] that grants the \termref{active player}[Player!active] a bonus to their \AP{} budget.
+
+% Explanation.
+The operate action has two distinct purposes.
+First, is serves as a good default option for the voters, as it is always beneficial to the \termref{active player}[Player!active] without giving them any particular obligation or purpose-bound advantage.
+Secondly, cooperating voters can possibly grant the \termref{active player}[Player!active] the opportunity to \termref{move}[Action!Move] a substantially greater \termref{distance}[Map!Distance] in their \termref{turn}[Turn].
+
+\begin{rules}
+    \rule{action.operate} The \termref{active player}[Player!active] receives \AP{} equal to a random integer within \(\interval{1}{6}\).
+\end{rules}
+
+\subsection{Engage}
+
+% Definition.
+The \termdef{engagement action}[Action!Engage] is a \termref{primary action}[Action!primary] that forces the \termref{active player}[Player!active] to perform an attack on a nearby \termref{drone}[Drone].
+
+% Explanation.
+An \termref{engage action}[Action!Engage] lets the voters force the \termref{active player}[Player!active] to attempt to cause \termref{damage}[Trigger!Damage] to another \termref{drone}[Drone] without having to pay any \termref{initiative cost}[Action!Cost].
+Because of this, it serves two distinct purposes.
+First, the \termref{human faction players}[Faction!Humans] can force the opposition to disrupt their own operations without being revealed.
+Secondly, cooperating voters can grant the \termref{active player}[Player!active] a significant combat advantage.
+
+\begin{rules}
+    \rule{action.engage}
+    \begin{stmts}
+        \stmt{} If the \termref{active player}[Player!active] can perform any \termref{ranged attack}[Action!Ranged], they choose one, perform it without paying \termref{initiative cost}[Action!Cost], and the engage action ends. \emph{(Ranged first)}
+        \stmt{} Otherwise, if the \termref{active player}[Player!active] can perform any \termref{melee attack}[Action!Melee], they choose one and perform it without paying \termref{initiative cost}[Action!Cost], and the engage action ends. \emph{(Melee second)}
+        \stmt{} Otherwise, if \termref{active player}[Player!active] can perform any \termref{move chain}[Action!Move chain] so that condition (1) is satisfied, they choose one, perform it, and execute (1). \emph{(Move+Ranged third)}
+        \stmt{} Otherwise, if \termref{active player}[Player!active] can perform any \termref{move chain}[Action!Move chain] so that condition (2) is satisfied, they choose one, perform it, and execute (2). \emph{(Move+Melee third)}
+        \stmt{} Otherwise, if there are any \termref{paths}[Map!Path] from the \termref{active player's}[Player!active] \termref{drone's location}[Drone!Location] to another \termref{drone's location}[Drone!Location], the \termref{active player}[Player!active] exhausts their \AP{} by performing \termref{moves}[Action!Move] along that path. \emph{(Chase)}
+    \end{stmts}
+\end{rules}
+
+% Explanation.
+To put is simply, the \termref{active player}[Player!active] has to perform a \termref{ranged attack}[Action!Ranged] if they can.
+If not, they must perform a \termref{melee attack}[Action!Melee] if they can.
+If not, they must \termref{move}[Action!Move] to repeat the process from above, if that changes anything.
+Finally, if they can't do any of these, they must chase the closest target of their choice.
+
+\subsection{Inspect}
+
+% Definition.
+The \termdef{inspection action}[Action!Inspect] is a \termref{primary action}[Action!primary] that forces the \termref{active player}[Player!active] to inspect some \termref{hidden}[Secret!hidden] \termref{game state}[Game!State].
+
+\begin{rules}
+    \rule{action.inspect}
+    \begin{stmts}
+        \stmt{} If the \termref{active player}[Player!active] can perform any \termref{examine}[Action!Examine] or \termref{loot action}[Action!Loot], they choose one, perform it, and the inspect action ends.
+        \stmt{} Otherwise, if \termref{active player}[Player!active] can perform any \termref{move chain}[Action!Move chain] so that condition (1) is satisfied, they choose one, perform it, and execute (1).
+        \stmt{} Otherwise, the inspect action ends.
+    \end{stmts}
+\end{rules}
+
+\section{Secondary}
+
+% Definition.
+A \termdef{secondary action}[Action!secondary] is an \termref{action}[Action] that can be executed during the \termref{secondary phase}[Phase!Secondary].
+
+\begin{rules}
+    \rule{action.pre} An action cannot be executed (or is invalid) if one of its requirements is not met.
+\end{rules}
+
+\subsection{Initiaitive cost}
+
+% Definition.
+The \termdef{initiative cost}[Action!Cost] of a \termref{secondary action}[Action!secondary] indicates how much \termref{action points}[Player!Action points] have to be expended to perform it.
+
+\begin{rules}
+    \rule{action.cost}
+    \begin{stmts}
+        \stmt{} A \termref{secondary action}[Action!secondary] can only be executed if the \termref{active player's}[Player!active] \AP{} budget is larger or equal to its initiative cost.
+        \stmt{} \AP{} are deducted from the \termref{active player's}[Player!active] budget at the start of the \termref{secondary action}[Action!secondary].
+    \end{stmts}
+\end{rules}
+
+\subsection{Move}
+
+% Definition.
+A \termdef{move action}[Action!Move] changes a \termref{drone's location}[Drone!Location].
+
+% Simplification.
+To simplify budgeting and rule definitions, a move always covers a distance of exactly one tile.
+
+\begin{rules}
+    \rule{action.move.cost} The move action has an \termref{initiative cost}[Action!Cost] of \(1\).
+    \rule{action.move.target}
+    \begin{stmts}
+        \stmt{} The move action requires a target.
+        \stmt{} The target must be a \termref{tile}[Map!Tile] that is \termref{linked}[Map!Link] to the \termref{active player's}[Player!active] \termref{drone's location}[Drone!Location].
+        \stmt{} The target \termref{tile}[Map!Tile] may not be occupied by any \termref{drone}[Drone].
+    \end{stmts}
+    \rule{action.move} When a move action is executed, the \termref{active player's}[Player!active] \termref{drone's location}[Drone!Location] is set to the target \termref{tile}[Map!Tile].
+\end{rules}
+
+\subsubsection{Move chain}
+
+% Definition.
+A \termdef{move chain}[Action!Move chain] is a sequence of \termref{move actions}[Action!Move] that are executed one after another.
+
+% Explanation.
+Since the \termref{secondary phase}[Phase!Secondary] allows the \termref{active player}[Player!active] to make any sequence of \termref{secondary actions}[Action!secondary], it is sometimes easier to reason about multiple successive \termref{moves}[Action!Move].
+
+% Properties.
+In a move chain, the target \termref{tile}[Map!Tile] must not necessarily be directly \termref{linked}[Map!Link] --- it suffices if there is a \termref{path}[Map!Path] from the current \termref{drone location}[Drone!Location] to the target, in which every \termref{tile}[Map!Tile] but the start is unoccupied.
+With respect to best effort for the \termref{active player}[Player!active], we then observe that the \termref{initiative cost}[Action!Cost] of a move chain is the \termref{shortest path length}[Map!Path] between those two \termref{tiles}[Map!Tile].
+
+\subsection{Ranged (attack)}
+
+% Definition.
+A \termdef{ranged attack action}[Action!Ranged] allows the \termref{active player}[Player!active] to cause damage to another \termref{drone}[Drone] in \termref{view}[Map!View], provided they have a \termref{ranged weapon}[Weapon!ranged] equipped.
+
+\begin{rules}
+    \rule{action.ranged.weapon} The ranged action requires a \termref{ranged weapon}[Weapon!ranged] to be the \termref{equipped item}[Drone!equipped item] of the \termref{active player's}[Player!active] \termref{drone}[Drone].
+    \rule{action.ranged.cost} The ranged action has an \termref{initiative cost}[Action!Cost] equal to the initiative cost of the \termref{weapon}[Weapon].
+    \rule{action.ranged.target}
+    \begin{stmts}
+        \stmt{} The ranged action requires a target.
+        \stmt{} The target must be a \termref{drone}[Drone].
+        \stmt{} The \termref{active player's}[Player!active] \termref{drone's location}[Drone!Location] must have \termref{line-of-sight}[Map!Line-of-sight] to the target's \termref{location}[Drone!Location].
+        \stmt{} The \termref{distance}[Map!Distance] to the target may not be larger than the \termref{range stat}[Weapon!Range] of the \termref{weapon}[Weapon].
+    \end{stmts}
+    \rule{action.ranged}
+    \begin{stmts}
+        \stmt{} When the ranged action is executed, a \emph{hit test} is performed. This means that the \termref{action}[Action] ends without any effects if a random integer within \(\interval{1}{6}\) is higher than the \termref{accuracy stat}[Weapon!Accuracy] of the weapon.
+        \stmt{} If the hit test is passed, a \termref{damage trigger}[Trigger!Damage] is fired for the target \termref{drone}[Drone] and a damage value equal to the \termref{damage stat}[Weapon!Damage] of the \termref{weapon}[Weapon].
+    \end{stmts}
+\end{rules}
+
+\subsection{Melee (attack)}
+
+% Definition.
+A \termdef{melee attack action}[Action!Melee] allows the \termref{active player}[Player!active] to cause damage to another \termref{drone}[Drone] next to theirs.
+
+\begin{rules}
+    \rule{action.melee.cost} The melee action has an \termref{initiative cost}[Action!Cost] of \(1\).
+    \rule{action.melee.target}
+    \begin{stmts}
+        \stmt{} The melee action requires a target.
+        \stmt{} The target must be a \termref{drone}[Drone].
+        \stmt{} The \termref{active player's}[Player!active] \termref{drone's location}[Drone!Location] must be \termref{linked}[Map!Link] to the target's \termref{location}[Drone!Location].
+    \end{stmts}
+    \rule{action.melee}
+    \begin{stmts}
+        \stmt{} When a melee action is executed, a \termref{damage trigger}[Trigger!Damage] is fired for the target \termref{drone}[Drone] and a damage value of \(1\).
+        \stmt{} If the \termref{active player's}[Player!active] \termref{drone}[Drone] has a \termref{melee weapon}[Weapon!melee] \termref{equipped}[Drone!equipped item], the damage value is adjusted to match its \termref{damage stat}[Weapon!Damage].
+    \end{stmts}
+\end{rules}
+
+\subsection{Loot (drone)}
+
+% Definition.
+The \termdef{loot drone action}[Action!Loot] allows the \termref{active player}[Player!active] to loot an \termref{incapacitated drone}[Drone!incapacitated].
+
+\begin{rules}
+    \rule{action.loot.cost} The loot action has an \termref{initiative cost}[Action!Cost] of \(1\).
+    \rule{action.loot.target}
+    \begin{stmts}
+        \stmt{} The examine action requires a target.
+        \stmt{} The target must be an \termref{incapacitated drone}[Drone!incapacitated].
+        \stmt{} The \termref{active player's}[Player!active] \termref{drone's location}[Drone!Location] must be \termref{linked}[Map!Link] to the target's \termref{location}[Drone!Location].
+    \end{stmts}
+    \rule{action.loot}
+    \begin{stmts}
+        \stmt{} When a loot action is executed, the \termref{allegiance}[Player!Allegiance] of the target's \termref{owner}[Drone!Owner] is revealed only to the \termref{active player}[Player!active].
+        \stmt{} When a loot action is executed, the target's \termref{inventory}[Drone!Inventory] is revealed only to the \termref{active player}[Player!active].
+        \stmt{} The \termref{active player}[Player!active] may discard and transfer any and all items between the \termref{inventories}[Drone!Inventory] of their \termref{drone}[Drone] and the target.
+    \end{stmts}
+\end{rules}
+
+\subsection{Examine (POI)}
+
+% Definition.
+The \termdef{examine POI action}[Action!Examine] allows the \termref{active player}[Player!active] to increment the \termref{transciever goal}[Game!Transciever goal].
+
+\begin{rules}
+    \rule{action.examine.cost} The examine action has an \termref{initiative cost}[Action!Cost] of \(1\).
+    \rule{action.examine.target}
+    \begin{stmts}
+        \stmt{} The examine action requires a target.
+        \stmt{} The target must be a \termref{tile}[Map!Tile] with a \termref{POI}[Map!POI].
+        \stmt{} The \termref{active player's}[Player!active] \termref{drone's location}[Drone!Location] must be \termref{linked}[Map!Link] to the target \termref{tile}[Map!Tile].
+    \end{stmts}
+    \rule{action.examine}
+    \begin{stmts}
+        \stmt{} When an examine action is executed, a \emph{skill test} is performed. This means that this \termref{action}[Action] ends without any effects if a random integer within \(\interval{1}{6}\) is higher than \(3\).
+        \stmt{} If the skill test is passed, a \termref{transciever trigger}[Trigger!Transciever] is fired.
+    \end{stmts}
+\end{rules}
+
+\subsection{Equip (item)}
+
+% Definition.
+The \termdef{equip item action}[Action!Equip] allows the \termref{active player}[Player!active] to change their \termref{drone's equipped item}[Drone!equipped item].
+
+\begin{rules}
+    \rule{action.equip.cost} The equip action has an \termref{initiative cost}[Action!Cost] of \(1\).
+    \rule{action.equip} When an equip action is executed, \termref{active player}[Player!active] may change their \termref{drone's equipped item}[Drone!equipped item] to any \termref{items}[Item] from their \termref{drone's inventory}[Drone!Inventory], swapping their places.
+\end{rules}
+
+\subsection{Use (item)}
+
+% Definition.
+The \termdef{item use action}[Action!Use] allows the \termref{active player}[Player!active] to use a \termref{usable item}[Item!usable] from their \termref{drone's inventory}[Drone!Inventory].
+
+\begin{rules}
+    \rule{action.use.item} The use action requires a \termref{usable item}[Item!usable] to be in the \termref{active player's}[Player!active] \termref{drone's inventory}[Drone!Inventory].
+    \rule{action.use.cost} The use action has an \termref{initiative cost}[Action!Cost] equal to the initiative cost of the \termref{used item}[Item!usable].
+    \rule{action.use}
+    \begin{stmts}
+        \stmt{} The requirements given by the \termref{usable item}[Item!usable] must be met.
+        \stmt{} When a use action is executed, its effects are defined by the \termref{used item}[Item!usable].
+    \end{stmts}
+\end{rules}
+
+\subsection{Manage (inventory)}
+
+% Definition.
+The \termdef{inventory management action}[Action!Manage] allows the \termref{active player}[Player!active] to manage their \termref{drone's inventory}[Drone!Inventory].
+
+\begin{rules}
+    \rule{action.manage.cost} The manage action has an \termref{initiative cost}[Action!Cost] of \(0\).
+    \rule{action.manage} When a manage action is executed, the \termref{active player}[Player!active] may discard any and all \termref{items}[Item] from their \termref{drone's inventory}[Drone!Inventory].
+\end{rules}

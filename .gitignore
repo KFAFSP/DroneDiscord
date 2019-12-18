@@ -1,5 +1,5 @@
 # LaTeX intermediaries.
-/*.aux
+*.aux
 /*.toc
 /*.lof
 

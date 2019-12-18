@@ -1,0 +1,287 @@
+\chapter{Game}
+
+% Definition.
+A \termdef{game}[Game] of \DDD{} is a series of \termref{rounds}[Round] played until one of the \termref{factions}[Faction] achieves victory.
+
+% Outline.
+A game typically begins with a setup that fixes the \termref{game parameters}[Game!Parameter], after which the \termref{game loop}[Game!Loop] starts.
+The \termref{game loop}[Game!Loop] then repeats until the end of the game is reached.
+Within this \termref{loop}[Game!Loop], all obligations and privileges are clearly defined by the following ruleset.
+
+\section{Parameters}
+
+% Definition.
+\termdef{Game parameters}[Game!Parameter] are constant parameters fixed before the start of a \termref{game}[Game].
+
+% Explanation.
+While \DDD{} is an extensible game that allows for additional content to modify the game rules, many of the base rules also allow for some flexibility.
+Some parameters specifically must be fixed before a \termref{game}[Game] can start, as they are important for its course.
+
+\begin{rules}
+    \rule{game.parameter.const} Game parameters are constant throughout the entire \termref{game}[Game].
+\end{rules}
+
+% Fairness.
+In general, it should be understood that the selection of these parameters can greatly influence the difficulty and length of the \termref{game}[Game], and therefore should be made in accordance with some rules all \termref{players}[Player] have agreed on beforehand.
+
+\subsection{Player count}
+
+% Definition.
+The \termdef{player count}[Game!Player count] is the number of \termref{players}[Player] that participate in a \termref{game}[Game].
+Its value is implicitly fixed by the number of participants.
+
+% Limits.
+Due to the nature of this game, there is both a lower and an upper limit to the number of \termref{players}[Player].
+For less than \(2\) \termref{players}[Player], one \termref{faction}[Faction] will win by default.
+Additionally, if the player count is \({(1 - f)}^{-1}\), where \(f\) is the \termref{faction ratio}[Game!Faction ratio], \termref{player allegiances}[Player!Allegiance] are trivially known.
+Finally, the upper bound for the player count is implicitly imposed by the setup rules, as there can be at most as many \termref{players}[Player] as there are \termref{tiles}[Map!Tile] on the \termref{map}[Map].
+
+\begin{rules}
+    \rule{game.parameter.playercount.min} There must be at least \(2\) \termref{players}[Player].
+    \rule{game.parameter.playercount.max} There can be at most as many \termref{players}[Player] as there are \termref{tiles}[Map!Tile] on the \termref{map}[Map].
+\end{rules}
+
+\begin{recommendations}
+    \recommendation{} We recommend a player count of more than \({(1 - f)}^{-1}\) players, where \(f\) is the \termref{faction ratio}[Game!Faction ratio].
+\end{recommendations}
+
+\subsection{Turn order}
+
+% Definition.
+The \termdef{turn order}[Game!Turn order] is the \termref{game parameter}[Game!Parameter] that determines in which order \termref{players}[Player] take their \termref{turns}[Turn].
+
+% Notation.
+The turn order is a sequence \((P_1, P_2, \ldots, P_N)\) of length \(N\), where \(N\) is the \termref{player count}[Game!Player count], in which each \termref{player}[Player] \(P_i\) is assigned a unique index \(i \in \mathbb{N}\), called their turn index.
+Using that turn index, we establish a strong ordering relation over all \termref{players}[Player].
+
+\begin{rules}
+    \rule{game.parameter.turnorder} Every \termref{player}[Player] has a unique index in the turn order.
+\end{rules}
+
+\subsection{Faction ratio}
+
+% Definition.
+The \termdef{faction ratio}[Game!Faction ratio] is the \termref{game parameter}[Game!Parameter] that determines how \termref{players}[Player] are distributed to \termref{factions}[Faction].
+
+% Notation.
+Let \(f\) be the faction ratio and \(N\) the \termref{player count}[Game!Player count].
+We then require the number of \termref{human faction players}[Faction!Humans] to be \(\lfloor fN \rfloor \).
+Consequently, the number of \termref{machine faction players}[Faction!Machines] is given by the expression \(N - \lfloor fN \rfloor \).
+
+\begin{rules}
+    \rule{game.parameter.factionratio} The faction ratio \(f\) must be within the bounds \(0 < f < 1\).
+\end{rules}
+
+% Recommendation.
+\begin{recommendations}
+    \recommendation{} We recommend a faction ratio of \(1/3\).
+\end{recommendations}
+
+\subsection{Round limit}
+
+% Definition.
+The \termdef{round limit}[Game!Round limit] is the \termref{game parameter}[Game!Parameter] that determines after how many \termref{rounds}[Round] a \termref{game}[Game] must have reached a conclusion.
+
+% Explanation.
+Following the \termref{victory conditions}[Trigger!Victory condition] of the \termref{machine faction}[Faction!Machines], they achieve victory if the \termref{round counter}[Game!Round counter] exceeds the value of the round limit.
+
+\begin{rules}
+    \rule{game.parameter.roundlimit} The round limit must be larger than \(0\).
+\end{rules}
+
+% Recommendation.
+\begin{recommendations}
+    \recommendation{} We recommend a round limit of \(N\), where \(N\) is the \termref{player count}[Game!Player count].
+\end{recommendations}
+
+\subsection{Transciever goal}
+
+% Definition.
+The \termdef{transciever goal}[Game!Transciever goal] is the \termref{game parameter}[Game!Parameter] that determines how difficult the \termref{machine faction}[Faction!Machines] \emph{task victory} is to achieve.
+
+% Explanation.
+Following the \termref{victory conditions}[Trigger!Victory condition] of the \termref{machine faction}[Faction!Machines], they achieve victory if the \termref{transciever count}[Game!Transciever count] reaches the value of the transciever goal.
+Combined with the \termref{transciever trigger}[Trigger!Transciever] mechanics, it specifies a lower bound of how many \termref{rounds}[Round] must be played before the \emph{task victory} can be achieved.
+
+\begin{rules}
+    \rule{game.parameter.transcievergoal} The transcievergoal must be larger than \(0\).
+\end{rules}
+
+% Recommendation.
+\begin{recommendations}
+    \recommendation{} We recommend a transciever goal of \(N - fN\), where \(f\) is the \termref{faction ratio}[Game!Faction ratio], and \(N\) is the \termref{player count}[Game!Player count].
+\end{recommendations}
+
+\subsection{Map}
+
+% Definition.
+The \termref{map}[Map] is the static geometry of the \termref{battlefield}[Battlefield].
+
+% Explanation.
+See Chapter~\ref{ch:map} for a detailed description of \termref{map}[Map] geometry.
+
+% Recommendation.
+\begin{recommendations}
+    \recommendation{} We recommend a map with a number of \termref{areas}[Map!Area] \(a\) within the bounds \(N/2< a < N\), where \(N\) is the \termref{player count}[Game!Player count].
+\end{recommendations}
+
+\section{State}
+
+% Definition.
+The \termdef{game state}[Game!State] is the entirety of all information pertaining to a \termref{game}[Game] that is persistent between \termref{rounds}[Round].
+
+% Explanation.
+In addition to the state members defined in this section, it also includes the state of all game objects as described in their state description sections.
+
+\subsection{Battlefield}
+
+% Definition.
+The \termdef{battlefield}[Battlefield] is the part of the \termref{game state}[Game!State] pertaining to the \termref{map}[Map].
+
+% Explanation.
+As \DDD{} is a board game, the entirety of the battlefield is always known to all \termref{players}[Player] at any given time.
+The battlefield consists of the dynamic parts of the map, which are currently just the \termref{drone locations}[Drone!Location].
+
+\subsection{Round counter}
+
+% Definition.
+The \termdef{round counter}[Game!Round counter] keeps track of how many \termref{rounds}[Round] have been played.
+
+\begin{rules}
+    \rule{game.state.roundcounter.init} The round counter is set to \(0\) before the start of a \termref{game}[Game].
+\end{rules}
+
+% Explanation.
+The round counter is automatically incremented at the start of each \termref{round}[Round].
+
+\subsection{Transciever count}
+
+% Definition.
+The \termdef{transciever count}[Game!Transciever count] keeps track of how close the \termref{machine faction}[Faction!Machines] is to a \emph{task victory}.
+
+\begin{rules}
+    \rule{game.state.transcievercount.init} The transciever count is set to \(0\) before the start of a \termref{game}[Game].
+\end{rules}
+
+% Explanation.
+The transciever count is incremented by the \termref{transciever trigger}[Trigger!Transciever].
+
+\section{Tournament}
+
+% Definition.
+A \termdef{tournament}[Tournament] is a series of consecutive \termref{ranked games}[Game!ranked] played to determine a winning \termref{player}[Player].
+
+\begin{rules}
+    \rule{tournament.fair} During a tournament, none of the \termref{game parameters}[Game!Parameter] may be changed.
+\end{rules}
+
+% Explanation.
+Tournaments are included in this rulebook to provide a standardized mechanism of evaluating \termref{player}[Player] strategies.
+Additionally, they can improve the fairness of \termref{player}[Player] ratings by reassigning \termref{players}[Player] to \termref{factions}[Faction] over a period of multiple \termref{games}[Game].
+
+\subsection{Ranked game}
+
+% Definition.
+A \termdef{ranked game}[Game!ranked] is a \termref{game}[Game] that awards all \termref{players}[Player] of the winning \termref{faction}[Faction] \termref{points}[Player!Score].
+
+\section{Loop}
+
+% Definition.
+The \termdef{game loop}[Game!Loop] is the repeated play of \termref{rounds}[Round] until the \termref{game}[Game] ends, making up the majority of the \termref{game}[Game].
+
+% Explanation.
+The \termref{rounds}[Round] in the loop are comprised of individual \termref{player's}[Player] \termref{turns}[Turn], which are divided into \termref{phases}[Phase].
+
+\subsection{Round}
+
+% Definition.
+A \termdef{round}[Round] lets every \termref{non-eliminated player}[Player!eliminated] take a \termref{turn}[Turn].
+
+\begin{rules}
+    \rule{round.pre} Before the start of every round, the \termref{round counter}[Game!Round counter] is incremented.
+    \rule{round.start} Every round starts with the \termref{turn}[Turn] of the first \termref{non-eliminated player}[Player!eliminated] in the \termref{turn order}[Game!Turn order].
+    \rule{round.next} When a \termref{player's}[Player] \termref{turn}[Turn] ends, the next \termref{non-eliminated player}[Player!eliminated] in the \termref{turn order}[Game!Turn order] begins their \termref{turn}[Turn].
+    \rule{round.end} A rounds ends when the last \termref{non-eliminated player}[Player!eliminated] in the \termref{turn order}[Game!Turn order] has ended their \termref{turn}[Turn].
+\end{rules}
+
+\subsection{Turn}
+
+% Definition.
+A \termdef{turn}[Turn] is dedicated to a single \termref{player}[Player], who is both obligated and privileged to perform \termref{actions}[Action].
+We define this player to be the currently \termdef{active player}[Player!active]of the \termref{game}[Game].
+
+\begin{rules}
+    \rule{turn.start} Every turn starts with the \termref{control phase}[Phase!Control].
+    \rule{turn.end} A turn ends when the \termref{secondary phase}[Phase!Secondary] ends.
+\end{rules}
+
+\subsection{Phase}
+
+% Definition.
+A \termdef{phase}[Phase] is a part of a \termref{turn}[Turn].
+Phases are predefined and fixed, and are always executed in the order given here.
+
+\subsubsection{Control phase}
+
+% Definition.
+The \termdef{control phase}[Phase!Control] implements the main game mechnic, which is the public vote, that dictates the obligation the \termref{active player}[Player!active] has to fulfill in the \termref{primary phase}[Phase!Primary].
+
+\begin{rules}
+    \rule{phase.control.start} The control phase starts the public vote.
+    \rule{phase.control.vote}
+    \begin{stmts}
+        \stmt{} All \termref{non-eliminated players}[Player!eliminated] participate in the vote.
+        \stmt{} Every participant must vote for one of the \termref{primary actions}[Action!primary].
+        \stmt{} The vote is anonymous.
+        \stmt{} The \termref{active player's}[Player!active] vote counts twice.
+        \stmt{} Votes for the \termref{operate action}[Action!Operate] count half.
+        \stmt{} The \termref{primary action}[Action!primary] with the majority of votes wins.
+        \stmt{} If there is a tie, the \termref{operate action}[Action!Operate] wins.
+        \stmt{} The winning \termref{primary action}[Action!primary] of the vote must be announced to all \termref{players}[Player].
+    \end{stmts}
+    \rule{phase.control.end} The control phase ends when the result of the vote was announced.
+\end{rules}
+
+\subsubsection{Interjection phase}
+
+% Definition.
+The \termdef{interjection phase}[Phase!Interjection] allows all \termref{non-active players}[Player!active] to react to the outcome of the \termref{control phase}[Phase!Control].
+
+\begin{rules}
+    \rule{phase.interjection.start} The interjection phase starts with the end of the \termref{control phase}[Phase!Control].
+    \rule{phase.interjection.queue}
+    \begin{stmts}
+        \stmt{} Every \termref{player}[Player] that has an \termref{interjection trigger}[Trigger!interjection] may queue it.
+        \stmt{} \termref{Triggers}[Trigger!interjection] are added to the queue in the order they were announced in.
+        \stmt{} If two \termref{triggers}[Trigger!interjection] are announced at the same time, they are queued in the \termref{turn order}[Game!Turn order] of the announcing \termref{players}[Player].
+        \stmt{} \termref{Triggers}[Trigger!interjection] are handled in the order they were queued in.
+    \end{stmts}
+    \rule{phase.interjection.end} The interjection phase ends when all \termref{players}[Player] have declared that they do not wish to queue any more \termref{interjection triggers}[Trigger!interjection].
+\end{rules}
+
+\subsubsection{Primary phase}
+
+% Definition.
+The \termdef{primary phase}[Phase!Primary] is dedicated to the \termref{active player}[Player!active] executing the \termref{primary action}[Action!primary] that was decided on by the previous \termref{phases}[Phase].
+
+\begin{rules}
+    \rule{phase.primary.start} The primary phase starts with the end of the \termref{interjection phase}[Phase!Interjection].
+    \rule{phase.primary.ap} At the start of the primary phase, the \termref{player's action point budget}[Player!Action points] is incremented by a random integer within \(\interval{1}{6}\).
+    \rule{phase.primary.obligation}
+    \begin{stmts}
+        \stmt{} The \termref{active player}[Player!active] has to execute the \termref{primary action}[Action!primary] that was determined by the previous \termref{phases}[Phase].
+        \stmt{} If the \termref{active player}[Player!active] is unable to do so, this \termref{phase}[Phase] ends.
+    \end{stmts}
+    \rule{phase.primary.end} The primary phase ends when the \termref{active player}[Player!active] has completed their obligatory \termref{primary action}[Action!primary].
+\end{rules}
+
+\subsubsection{Secondary phase}
+
+% Definition.
+The \termdef{secondary phase}[Phase!Secondary] allows the \termref{active player}[Player!active] to perform any \termref{secondary actions}[Action!secondary] that they like.
+
+\begin{rules}
+    \rule{phase.secondary.start} The secondary phase starts with the end of the \termref{primary phase}[Phase!Primary].
+    \rule{phase.secondary.privilege} During the secondary phase, the \termref{active player}[Player!active] may execute any and all \termref{secondary actions}[Action!secondary] in any order they want.
+    \rule{phase.secondary.end} The secondary phase ends when the \termref{active player}[Player!active] declares its end.
+\end{rules}

@@ -1,0 +1,171 @@
+\chapter{Drones}
+
+% Definition.
+A \termdef{drone}[Drone] is an \termref{in-game}[Game] actor on the \termref{battlefield}[Battlefield] that can execute \termref{actions}[Action].
+
+\section{Attributes}
+
+% Definition.
+Every \termref{drone}[Drone] has the same set of attributes with different actual values.
+All attribtutes must be initialized at the start of a \termref{game}[Game], and influence how the \termref{drone}[Drone] performs on the \termref{battlefield}[Battlefield].
+
+\subsection{Owner}
+
+% Definition.
+The \termdef{owner}[Drone!Owner] of a \termref{drone}[Drone] is the \termref{player}[Player] that has control over it.
+As the owner is invariant, many properties of the \termref{drone}[Drone] carry over to the \termref{player}[Player] and vice versa.
+
+\begin{rules}
+    \rule{drone.owner.init}
+    \begin{stmts}
+        \stmt{} Drone ownership is assigned at the start of the \termref{game}[Game].
+        \stmt{} Every \termref{player}[Player] takes control of exactly one \termref{drone}[Drone].
+        \stmt{} Every \termref{dron}[Drone] belongs to exactly one \termref{player}[Player].
+    \end{stmts}
+    \rule{drine.owner.const} Drone ownership remains constant throughout the entire \termref{game}[Game].
+\end{rules}
+
+\subsection{Incapacitation}
+
+% Definition.
+An \termdef{incapacitated drone}[Drone!incapacitated] is a \termref{drone}[Drone] that can no longer execute \termref{actions}[Action].
+
+\begin{rules}
+    \rule{drone.incapacitation}
+    \begin{stmts}
+        \stmt{} Incapacitated drones may not execute \termref{actions}[Action].
+        \stmt{} When a \termref{drone}[Drone] becomes incapacitated, its \termref{owner}[Drone!Owner] is \termref{eliminated}[Player!eliminated].
+    \end{stmts}
+    \rule{drone.incapacitation.init} At the start of a \termref{game}[Game], no \termref{drone}[Drone] is incapacitated.
+\end{rules}
+
+\subsection{Health}
+
+% Definition.
+The \termdef{health}[Drone!Health] (\HP{}) of a \termref{drone}[Drone] indicates how much \termref{damage}[Trigger!Damage] it can take before it becomes \termref{incapacitiated}[Drone!incapacitated].
+
+\begin{rules}
+    \rule{drone.health}
+    \begin{stmts}
+        \stmt{} When a \termref{drone}[Drone] takes \termref{damage}[Trigger!Damage], its health is decreased according to the \termref{damage value}[Trigger!Damage].
+        \stmt{} Drone health is not reduced below \(0\).
+        \stmt{} When drone health reaches \(0\) at any point during the \termref{game}[Game], the \termref{drone}[Drone] becomes \termref{incapacitated}[Drone!incapacitated].
+    \end{stmts}
+    \rule{drone.health.init} Every \termref{drone}[Drone] starts the \termref{game}[Game] with \(10\) health.
+\end{rules}
+
+% Unit.
+The health of a \termref{drone}[Drone] is measured in integer health points, with one health point being denoted as \SI{1}{\healthpoints{}}.
+
+\subsection{Location}
+
+% Definition.
+The \termdef{location}[Drone!Location] of a \termref{drone}[Drone] shows which \termref{tile}[Map!Tile] on the \termref{battlefield}[Battlefield] it occupies.
+
+\begin{rules}
+    \rule{drone.location}
+    \begin{stmts}
+        \stmt{} Every \termref{drone}[Drone] has a location indicated by \termref{tile coordinates}[Map!Coordinates].
+        \stmt{} Every \termref{tile}[Map!Tile] can be occupied by at most \(1\) \termref{drone}[Drone].
+    \end{stmts}
+    \rule{drone.location.init} At the start of the \termref{game}[Game], every \termref{player}[Player] assigns any valid location of their choice to their \termref{drone}[Drone].
+\end{rules}
+
+\subsection{Traits}
+
+% Definition.
+The \termdef{traits}[Drone!Trait] of a \termref{drone}[Drone] modify its behavior \termref{in-game}[Game], adding special \termref{triggers}[Trigger] for for its \termref{owner}[Drone!Owner].
+
+\begin{rules}
+    \rule{drone.traits.init} Every \termref{drone}[Drone] is randomly assigned zero or more traits at the start of the \termref{game}[Game].
+    \rule{drone.traits.secret} All traits assigned to a \termref{drone}[Drone] are \termref{secrets}[Secret] of their \termref{owners}[Drone!Owner].
+    \rule{drone.traits.const} All trait assignments are fixed throughout the \termref{game}[Game].
+\end{rules}
+
+\subsubsection{Role}
+
+% Definition.
+A \termdef{role}[Role] is a \termref{drone trait}[Drone!Trait] that is tied to a particular \termref{faction}[Faction]
+
+\begin{rules}
+    \rule{drone.trait.role} A role may only be assigned to a \termref{drone}[Drone] \termref{owned}[Drone!Owner] by a member of the role's \termref{faction}[Faction].
+\end{rules}
+
+\subsection{Items}
+
+% Definition.
+An \termdef{item}[Item] is an object that can be in the posession of a \termref{drone}[Drone].
+
+\subsubsection{Equippable}
+
+% Definition.
+An \termdef{equippable item}[Item!equippable] can be interacted with in a \termref{equip action}[Action!Equip].
+
+% Explanation.
+Equippable items may declare \termref{triggers}[Trigger] that occur on \termref{equip}[Action!Equip].
+
+\subsubsection{Usable}
+
+% Definition.
+A \termdef{usable item}[Item!usable] can be interacted with in a \termref{use action}[Action!Use].
+
+% Explanation.
+Usable items must declare \termref{triggers}[Trigger] that occur on \termref{use}[Action!Use].
+
+\subsubsection{Weapons}
+
+% Definition.
+\termdef{Weapons}[Weapon] are \termref{equippable items}[Item!equippable] that are used in combat.
+
+% Common Properties.
+All weapons require the following stats to be defined:
+
+\begin{itemize}
+    \item \termdef{Damage}[Weapon!Damage]
+
+    Amount of \termref{damage}[Trigger!Damage] dealt when using this weapon.
+\end{itemize}
+
+% Melee properties.
+\termdef{Melee weapons}[Weapon!melee] are weapons used in \termref{melee combat}[Action!Melee].
+They require no additional information.
+
+% Ranged properties.
+\termdef{Ranged weapons}[Weapon!ranged] are weapons used in \termref{ranged combat}[Action!Ranged].
+All ranged weapons require the following stats to be defined in addition to the basic ones:
+
+\begin{itemize}
+    \item \termdef{Cost}[Weapon!Cost]
+
+    Defines the \termref{initiative cost}[Action!Cost] incurred by \termref{firing}[Action!Ranged] this weapon.
+
+    \item \termdef{Accuracy}[Weapon!Accuracy]
+
+    Difficulty of the hit test required when \termref{firing}[Action!Ranged] this weapon.
+
+    \item \termdef{Range}[Weapon!Range]
+
+    Maximum target \termref{distance}[Map!Distance] when \termref{firing}[Action!Ranged] this weapon.
+\end{itemize}
+
+\subsection{Inventory}
+
+% Definition.
+The \termdef{inventory}[Drone!Inventory] of a \termref{drone}[Drone] is a collection of \termref{items}[Item] held by it.
+Every drone's inventory is managed by their \termref{owner}[Drone!Owner].
+
+\begin{rules}
+    \rule{drone.inventory.init} Every \termref{drone}[Drone] is randomly assigned up to \(3\) items at the start of the \termref{game}[Game].
+    \rule{drone.inventory} Every \termref{drone}[Drone] can hold at most \(3\) \termref{items}[Item].
+    \rule{drone.inventory.secret} The drone's inventory is a \termref{secret}[Secret] of its \termref{owner}[Drone!Owner].
+\end{rules}
+
+\subsubsection{Equipped item}
+
+% Definition.
+An \termdef{equipped item}[Drone!equipped item] of a \termref{drone}[Drone] is an \termref{equippable item}[Item!equippable] in its \termref{inventory}[Drone!Inventory] that was explicitly equipped by the \termref{drone's owner}[Drone!Owner].
+
+\begin{rules}
+    \rule{drone.equip} Every \termref{drone}[Drone] can have zero or one equipped item.
+    \rule{drone.equip.reveal} A drone's equipped item is \termref{revealed}[Secret!revealed] to all \termref{players}[Player].
+\end{rules}
